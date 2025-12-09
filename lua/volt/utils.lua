@@ -68,7 +68,11 @@ end
 
 M.softclose = function(val)
   for _, win in ipairs(val.wins) do
-    api.nvim_win_close(win, { force = false })
+    local valid_win = api.nvim_win_is_valid(win)
+
+    if valid_win then
+      api.nvim_win_close(win, { force = false })
+    end
   end
 
   if val.after_softclose then

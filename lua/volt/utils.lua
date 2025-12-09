@@ -39,7 +39,6 @@ end
 
 M.close = function(val)
   local event_bufs = require("volt.events").bufs
-
   for _, buf in ipairs(val.bufs) do
     local valid_buf = api.nvim_buf_is_valid(buf)
 
@@ -65,6 +64,16 @@ M.close = function(val)
   end
 
   vim.g.nvmark_hovered = nil
+end
+
+M.softclose = function(val)
+  for _, win in ipairs(val.wins) do
+    api.nvim_win_close(win, { force = false })
+  end
+
+  if val.after_softclose then
+    val.after_softclose()
+  end
 end
 
 M.get_hl = function(name)

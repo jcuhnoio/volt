@@ -82,7 +82,7 @@ M.mappings = function(val)
     end, { buffer = buf })
 
     map("n", "<ESC>", function()
-      utils.close(val)
+      utils.softclose(val)
     end, { buffer = buf })
 
     if val.winclosed_event then
@@ -136,6 +136,17 @@ M.close = function(buf)
 
   api.nvim_buf_call(buf, function()
     api.nvim_feedkeys("q", "x", false)
+  end)
+end
+
+M.softclose = function(buf)
+  if not buf then
+    api.nvim_feedkeys("q", "x", false)
+    return
+  end
+
+  api.nvim_buf_call(buf, function()
+    api.nvim_feedkeys("<ESC>", "x", false)
   end)
 end
 
